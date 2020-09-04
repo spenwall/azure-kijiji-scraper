@@ -6,9 +6,11 @@ const sendGrid = require('./components/sendGrid')
 
 const timerTrigger: AzureFunction = async function (context: Context, myTimer: any): Promise<void> {
     var timeStamp = new Date().toISOString()
+    console.log(process.env['URLS'])
     const urls: string[] = JSON.parse(process.env['URLS'])
 
     urls.forEach(async(url) => {
+        console.log(url)
         const response = await axios(url)
         const $ = cheerio.load(response.data)
         const ads = $('.search-item.regular-ad')

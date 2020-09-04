@@ -6,8 +6,8 @@ module.exports = async (ad) => {
     const msg = {
         personalizations: [{
             to: 'dude.wallace@gmail.com',
-            subject: ad.title,
             dynamic_template_data: {
+                subject: 'Kijiji Scraper',
                 title: ad.title,
                 link: ad.link,
                 price: ad.price,
@@ -15,7 +15,6 @@ module.exports = async (ad) => {
                 image: ad.image,
             }
         }],
-        subject: ad.title,
         from: 'spencer.wallace@outlook.com',
         template_id: 'd-44ac8371af674af896c065ca398c360a'
     }
