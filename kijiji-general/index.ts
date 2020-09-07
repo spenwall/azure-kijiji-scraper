@@ -1,12 +1,12 @@
 import { AzureFunction, Context } from "@azure/functions"
 import axios from 'axios'
 const cheerio = require('cheerio')
-const airtableIds = require('./components/airtableIds')
 const sendGrid = require('./components/sendGrid')
+const Airtable = require('airtable-simple')
 
 const timerTrigger: AzureFunction = async function (context: Context, myTimer: any): Promise<void> {
-    var timeStamp = new Date().toISOString()
-    console.log(process.env['URLS'])
+    let timeStamp = new Date().toISOString()
+    let airtable = new Airtable(process.env['AIRTABLE_API_KEY'], process.env['AIRTABLE_BASE'], 'viewed')
     const urls: string[] = JSON.parse(process.env['URLS'])
 
     urls.forEach(async(url) => {
@@ -16,7 +16,9 @@ const timerTrigger: AzureFunction = async function (context: Context, myTimer: a
         const ads = $('.search-item.regular-ad')
 
         try {
-            const oldAds: string[] = await airtableIds.getLastIds(url)
+            const row = await airtable.first('url', url)
+            console.log(row)
+            const oldAds: string[] = JSON.parse(row.fields.viewed_ads)
             const allIds: string[] = []
             ads.each((i, ad) => {
                 const adId = $(ad).attr('data-listing-id')
@@ -36,7 +38,7 @@ const timerTrigger: AzureFunction = async function (context: Context, myTimer: a
                 sendGrid(myAd)
     
             })
-            airtableIds.saveIds(url, allIds)
+            airtable.update(row.id, 'viewed_ads', JSON.stringify(allIds))
         } catch(error) {
             console.log(error)
         }
