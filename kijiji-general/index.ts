@@ -51,7 +51,7 @@ const timerTrigger: AzureFunction = async function (context: Context, myTimer: a
         to: 'dude.wallace@gmail.com',
         from: 'spencer.wallace@outlook.com',
         subject: fields.subject,
-        html: `<h1>${myAd.title}</h1><div>${myAd.price}</div><br><div>${myAd.location}</div><br><a href="${myAd.link}"><img src="${myAd.image}"></a><br><a href="${myAd.link}"><button>Go to Ad</button></a>`
+        html: `<h1>${myAd.title}</h1><div>${myAd.price}</div><br><a href="${myAd.link}"><img src="${myAd.image}"></a><br><div>${myAd.location}</div><br><a href="${myAd.link}"><button>Go to Ad</button></a>`
       }
 
 
