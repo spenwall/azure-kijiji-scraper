@@ -37,10 +37,16 @@ const timerTrigger: AzureFunction = async function (context: Context, myTimer: a
         return;
       }
 
+      const title = $(ad).find(fields.title_selector).text().trim();
+
+      if (fields.exclude !== '' && title.contains(fields.exclude)) {
+        return;
+      }
+
       let baseUrl = typeof fields.base_url !== 'undefined' ? fields.base_url : ''
 
       let myAd = {
-        title: $(ad).find(fields.title_selector).text().trim(),
+        title: title,
         price: $(ad).find(fields.price_selector).text().trim(),
         location: $(ad).find(fields.location_selector).text().trim(),
         image: $(ad).find(fields.image_selector).attr(fields.image_attr),
