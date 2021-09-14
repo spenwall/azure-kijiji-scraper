@@ -39,7 +39,7 @@ const timerTrigger: AzureFunction = async function (context: Context, myTimer: a
 
       const title = $(ad).find(fields.title_selector).text().trim();
 
-      if (fields.exclude !== '' && title.contains(fields.exclude)) {
+      if (fields.exclude !== undefined && title.toLowerCase().includes(fields.exclude)) {
         return;
       }
 
